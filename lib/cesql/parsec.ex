@@ -44,8 +44,73 @@ defmodule CESQL.Parsec do
 
   literal = choice([boolean_literal, number_literal, string_literal])
 
-  expression = choice([literal, value_identifier])
+
+  not_operator = string("NOT") 
+
+  unary_logic_operator = not_operator
+  unary_numeric_operator = string("-")
+  unary_operation =
+    choice([
+      unary_numeric_operator |> ignore(optional(string(" "))),
+      unary_logic_operator |> ignore(string(" "))
+    ])
+    |> parsec(:expression)
+    |> label("unary operation")
+
+  binary_logic_operator =
+    choice([
+      string("AND"),
+      string("OR"), 
+      string("XOR")
+    ])
+    |> lookahead(string(" "))
+    |> label("binary logic operation")
+
+  binary_comparison_operator =
+    choice([
+      string("="),
+      string("!="),
+      string("<>"),
+      string(">="),
+      string("<="),
+      string("<"),
+      string(">")
+    ])
+    |> label("binary comparison operator")
+
+  binary_numeric_arithmetic_operator =
+    choice([
+      string("+"),
+      string("-"),
+      string("*"),
+      string("/"),
+      string("%")
+    ])
+    |> label("binary arithmetic operator")
+
+  binary_operation =
+    parsec(:expression)
+    |> ignore(string(" "))
+    |> choice([
+      binary_comparison_operator,
+      binary_numeric_arithmetic_operator,
+      binary_logic_operator
+    ])
+    |> ignore(string(" "))
+    |> parsec(:expression)
+
+  parenthetical_expression =
+    ignore(string("("))
+    |> parsec(:expression)
+    |> ignore(string(")"))
+
+  expression = choice([
+    literal, 
+    value_identifier,
+    parenthetical_expression,
+    unary_operation,
+    binary_operation, 
+  ])
 
   defparsec :expression, expression
-
 end
