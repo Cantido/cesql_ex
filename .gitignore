@@ -24,3 +24,7 @@ cesql_ex-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# Auto-generated parser code
+/src/cesql_parser.erl
+/src/cesql_lexer.erl
