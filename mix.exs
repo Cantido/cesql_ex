@@ -21,8 +21,7 @@ defmodule CESQL.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:cloudevents, "~> 0.6.1"},
-      {:nimble_parsec, "~> 1.0"}
+      {:cloudevents, "~> 0.6.1"}
     ]
   end
 end
