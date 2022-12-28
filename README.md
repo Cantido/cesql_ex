@@ -1,6 +1,9 @@
-# CESQL
+# cesql_ex
 
-**TODO: Add description**
+A [CloudEvents SQL Expression Language](https://github.com/cloudevents/spec/blob/main/cesql/spec.md) engine for Elixir.
+
+The spec for CESQL isn't finished yet, and neither is this library!
+Do not use either in production!
 
 ## Installation
 
