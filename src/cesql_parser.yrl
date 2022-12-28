@@ -4,8 +4,10 @@ Terminals lparen rparen comma int boolean string keyword keyword_and keyword_or 
 
 Rootsymbol expression.
 
-Left 100 binary_logic_operator.
-Left 200 binary_comparison_operator.
+Left 100 binary_arithmetic_operator.
+Left 200 binary_logic_operator.
+Left 300 binary_comparison_operator.
+Unary 1000 unary_logic_operator unary_numeric_operator.
 
 literal -> int : extract_value('$1').
 literal -> boolean : extract_value('$1').

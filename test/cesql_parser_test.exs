@@ -31,6 +31,29 @@ defmodule CESQL.ParserTest do
       }}
 
   end
+
+  test "associativity and precedence of NOT vs AND" do
+    {:ok, result} = parse("firstname = 'Rosa' AND NOT lastname = 'Richter'")
+
+    assert {first, :keyword_and, second} = result
+    assert {{:keyword, 1, 'firstname'}, :comparison_eq, '\'Rosa\''} = first
+    assert {{:keyword_not, {:keyword, 1, 'lastname'}}, :comparison_eq, '\'Richter\''} = second
+  end
+
+  test "associativity and precedence of NOT vs AND, pt 2" do
+    {:ok, result} = parse("NOT firstname = 'Rosa' AND lastname = 'Richter'")
+      
+    assert {first, :keyword_and, _second} = result
+    assert {{:keyword_not, {:keyword, 1, 'firstname'}}, :comparison_eq, '\'Rosa\''} = first
+  end
+
+  test "associativity and precedence of hyphen" do
+    {:ok, result} = parse("sequence - - 5")
+      
+    assert {{:keyword, 1, 'sequence'}, :hyphen, {:hyphen, 5}} = result
+  end
+
+
   
   defp parse(str) do
     {:ok, tokens, _} = str |> String.to_charlist() |> :cesql_lexer.string()
