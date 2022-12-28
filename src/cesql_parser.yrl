@@ -4,8 +4,8 @@ Terminals lparen rparen comma int boolean string keyword keyword_and keyword_or 
 
 Rootsymbol expression.
 
-Nonassoc 100 keyword_and.
-Nonassoc 200 comparison_eq.
+Left 100 binary_logic_operator.
+Left 200 binary_comparison_operator.
 
 literal -> int : extract_value('$1').
 literal -> boolean : extract_value('$1').
